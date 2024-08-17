@@ -1,5 +1,9 @@
 package thread.start;
 
+import util.MyLogger;
+
+import static util.MyLogger.*;
+
 public class HelloThreadMain {
 
     public static void main(String[] args) {
@@ -11,6 +15,6 @@ public class HelloThreadMain {
         helloThread.start();
         System.out.println(Thread.currentThread().getName() + " : start() 호출 후");
 
-        System.out.println(Thread.currentThread().getName() + " : main() end");
+        log("main() end");
     }
 }
