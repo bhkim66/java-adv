@@ -1,6 +1,9 @@
 package thread.control;
 
+import util.ThreadUtils;
+
 import static util.MyLogger.log;
+import static util.ThreadUtils.*;
 
 public class ThreadStateMain {
     public static void main(String[] args) throws InterruptedException {
@@ -27,11 +30,12 @@ public class ThreadStateMain {
                 log("myThread.state4 = " + Thread.currentThread().getState());
 
                 log("end()");
+
+                sleep(1000); // utils 함수 사용
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
+
 }
