@@ -9,7 +9,8 @@ import static util.ThreadUtils.sleep;
 public class BoundedMain {
     public static void main(String[] args) {
         //1. BoundedQueue 선택
-        BoundedQueue queue = new BoundedQueueV1(2);
+//        BoundedQueue queue = new BoundedQueueV1(2);
+        BoundedQueue queue = new BoundedQueueV2(2);
 
         //2. 생산자, 소비사 실행 순서 선택, 반드시 하나만 선택!
          producerFirst(queue);
@@ -19,9 +20,9 @@ public class BoundedMain {
     private static void consumerFirst(BoundedQueue queue) {
         log("== [소비자 먼저 실행] 시작, " + queue.getClass().getSimpleName() + " ==");
         List<Thread> threads = new ArrayList<>();
-        startConsumer(queue, threads);
-        printAllState(queue, threads);
         startProducer(queue, threads);
+        printAllState(queue, threads);
+        startConsumer(queue, threads);
         printAllState(queue, threads);
         log("== [소비자 먼저 실행] 종료, " + queue.getClass().getSimpleName() + " ==");
     }
