@@ -2,11 +2,11 @@ package thread.bounded;
 
 import static util.MyLogger.log;
 
-public class Producertask implements Runnable{
+public class ProducerTask implements Runnable{
     private BoundedQueue queue;
     private String request;
 
-    public Producertask(BoundedQueue queue, String request) {
+    public ProducerTask(BoundedQueue queue, String request) {
         this.queue = queue;
         this.request = request;
     }
