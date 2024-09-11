@@ -21,7 +21,7 @@ public class BoundedQueueV4 implements BoundedQueue {
     }
 
     @Override
-    public void put(String data) { // 같은 인스턴스의 lock을 획득하기 때문에 스레드가 put()을 사용중이면 take()에 접근 불가능하다
+    public void put(String data) {
         lock.lock();
         try {
             while (queue.size() == max) {
