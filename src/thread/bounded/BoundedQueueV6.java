@@ -8,15 +8,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static util.MyLogger.log;
 
-public class BoundedQueueV4 implements BoundedQueue {
+public class BoundedQueueV6 implements BoundedQueue {
 
     private final Lock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition(); // 스레드 대기 집합
+    private final Condition producerCond = lock.newCondition(); // 생산자용 대기 집합
+    private final Condition consumerCond = lock.newCondition(); // 소비자용 대기 집합
 
     private final Queue<String> queue = new ArrayDeque<>();
     private final int max;
 
-    public BoundedQueueV4(int max) {
+    public BoundedQueueV6(int max) {
         this.max = max;
     }
 
@@ -27,15 +28,15 @@ public class BoundedQueueV4 implements BoundedQueue {
             while (queue.size() == max) {
                 log("[put] 큐가 가득 참, 생산자 대기");
                 try {
-                    condition.await();
+                    producerCond.await();
                     log("[put] 생산자 깨어남");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
             queue.offer(data);
-            log("[put] 생산자 데이터 저장, signal() 호출");
-            condition.signal();
+            log("[put] 생산자 데이터 저장, consumerCond signal() 호출");
+            consumerCond.signal(); // 생산자가 데이터를 만들었기 때문에 소비자 대기 집합에서 소비자 스레드를 깨운다
         } finally {
             lock.unlock();
         }
@@ -48,15 +49,15 @@ public class BoundedQueueV4 implements BoundedQueue {
             while (queue.isEmpty()) {
                 log("[take] 큐에 데이터가 없음, 소비자 대기");
                 try {
-                    condition.await();
+                    consumerCond.await();
                     log("[take] 큐에 데이터가 없음, 소비자 대기");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
             String data = queue.poll();
-            log("[take] 소비자 데이터 획득, signal() 호출");
-            condition.signal();
+            log("[take] 소비자 데이터 획득, producerCond signal() 호출");
+            producerCond.signal(); // 소비자가 데이터를 소비했기 때문에 생산자 대기 집합에서 생산자 스레드를 깨운다
             return data;
         } finally {
             lock.unlock();
@@ -67,5 +68,4 @@ public class BoundedQueueV4 implements BoundedQueue {
     public String toString() {
         return queue.toString();
     }
-
 }
