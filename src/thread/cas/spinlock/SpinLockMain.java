@@ -12,7 +12,7 @@ public class SpinLockMain {
             try {
                 // critical section
                 log("비즈니스 로직 실행");
-//sleep(1); // 오래 걸리는 로직에서 스핀 락 사용X
+                //sleep(1); // 오래 걸리는 로직에서 스핀 락 사용X
             } finally {
                 spinLock.unLock();
             }

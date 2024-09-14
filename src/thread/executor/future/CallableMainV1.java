@@ -12,7 +12,7 @@ public class CallableMainV1 {
         Future<Integer> future = es.submit(new MyCallable());
         Integer result = future.get();
         log("result value = " + result);
-        es.shutdown();
+        es.close();
     }
 
     static class MyCallable implements Callable<Integer> {

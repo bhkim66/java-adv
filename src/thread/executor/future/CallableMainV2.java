@@ -17,7 +17,7 @@ public class CallableMainV2 {
         log("future.get() [블로킹] 메서드 호출 완료 -> , main 스레드 RUNNABLE");
         log("result value = " + result);
         log("future 완료, future = " + future);
-        es.shutdown();
+        es.close();
     }
 
     static class MyCallable implements Callable<Integer> {
