@@ -18,7 +18,6 @@
     - `소프트웨어` 기반으로 CPU  시간을 분할하여 각 작업에 할당한다
 - 둘은 여러 작업에 대해서 **동시에 처리하는 목적은 비슷**하지만, `멀티 태스킹`은 `하나의 CPU`에서 여러 개의 작업을 처리하는 반면, `멀티 프로세싱`은 `여러 개의 CPU`가 각각의 작업을 처리하는 것이라는 차이점이 있다.
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/357dd3c4-c19d-4333-a365-d1b07d96cb7d/c3a71aad-3413-41af-a8ef-ae6c503f09df/image.png)
 
 ## 프로세스
 
@@ -165,7 +164,6 @@ public static void main(String[] args) {
     - `main 메서드`가 `스레드`에게 **작업을 내리고 값을 받거나 출력할 때** main 스레드는 각 스레드를 실행시키고 값을 기다리지 않는다. 그리하여 *제대로 된 값을 받지 못하는 현상*이 발생한다
     - `join` 사용시 해당 스레드가 종료될 때 까지 기다린다. 이때 기다리는 스레드는 `WAITING` 상태가 된다
         
-        ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/357dd3c4-c19d-4333-a365-d1b07d96cb7d/38d9b40b-6e53-46ee-b4ef-7617a27b3308/image.png)
         
     - `main` 스레드에서 코드를 실행하면 `thread1`과 `thread2`가 종료될 때 까지 기다린다. `main`스레드는 `WAITING` 상태가 된다
     - `thread1` 이 종료되지 않았다면 `main` 스레드는 join() 코드 안에서 더는 진행하지 않고 멈추어 기다린다. 그리고 스레드가 종료시 `main` 스레드는 `RUNNABLE` 상태가 되고 다음 코드로 이동한다
@@ -212,14 +210,10 @@ public static void main(String[] args) {
 - `메인 메모리`는 CPU 입장에서 보면 거리도 멀고, 속도도 상대적으로 느리다. 대신에 상대적으로 가격이 저렴해서 큰 용량을 **쉽게 구성할 수 있다**
 - CPU 연산은 **매우 빠르기** 때문에 CPU 가까이에 매우 빠른 메모리가 필요한데, 이것이 바로 `캐시 메모리` 이다. `캐시 메모리`는 CPU와 가까이 붙어있고, 속도도 매우 빠른 메모리이다.
 - 현대 CPU 대부분은 코어 단위로 캐시 메모리를 각각 보유하고 있다
-    - 참초 - [image.png](https://www.notion.so/917070443dd24ed6a4446c43f6813607?pvs=21)
     - 각 스레드가 `runFalg` 값을 사용하면 CPU는 이 값을 효율적으로 처리하기 위해 먼저 `runFlag`를 캐시 메모리에 불러온다
     - 그리고 이후에는 캐시 메모리에 있는 `runFlag` 를 사용하게 된다
-    - 참초 - [image.png](https://www.notion.so/701280095aca469c9c71db70634f4512?pvs=21)
     - `main` 스레드는 runFlag를 false로 설정한다. 이때 캐시 메모리의 runFlag가 false로 설정된다
     - **여기서 핵심은 캐시 메모리의 `runFlag` 값만 변한다는 것이다. 메인 메모리의 값은 즉시 반영되지 않는다**
-    - 참초 - [image.png](https://www.notion.so/326a1951d40f4d3eb0f7094a2b271f49?pvs=21)
-    - 참초 - [image.png](https://www.notion.so/d1edf61d3f894fadbcc545883bcd6525?pvs=21)
     - 그림과 같이 메인 메모리나 다른 스레드의 값이 반영되는 시기는 알 수 없고 극단적으로 **평생 반영이 안될수도 있다**
 - **메모리 가시성**
     - 멀티스레드 환경에서는 한 스레드가 변경한 값이 다른 스레드에서 언제 보이지는에 대한 문제를 `메모리 가시성`이라 한다. 이름 그래도 변경한 값이 보이는가, 보이지 않는가의 문제이다
@@ -262,7 +256,6 @@ public static void main(String[] args) {
     - 지역 변수는 스레드의 개별 저장 공간인 `스택 영역`에 생성된다
     - 따라서 **지역 변수는 절대로 다른 스레드와 공유되지 않는다**
     - 이런 이유로 지역 변수는 동기화에 대한 걱정을 하지 않아도 된다. **`synchronized`** *사용시 오히려 성능이 느려진다*
-    - 참조 - [image.png](https://www.notion.so/22936fdd3a254929b057bdd7134a7bda?pvs=21)
 
 ## concurrent.Lock
 
